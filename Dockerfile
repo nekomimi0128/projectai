@@ -1,21 +1,30 @@
-# Kali ベース
-FROM kalilinux/kali-rolling
+# Kali Linux 最新イメージ
+FROM kalilinux/kali-rolling:latest
 
-# パッケージ更新と必要なものインストール
+# 必要パッケージのインストール
 RUN apt-get update && \
-    apt-get install -y xfce4 xfce4-goodies tightvncserver novnc websockify sudo && \
-    apt-get clean
+    apt-get install -y \
+        xfce4 xfce4-goodies \
+        tightvncserver \
+        novnc \
+        websockify \
+        dbus-x11 x11-xserver-utils \
+        sudo \
+    && apt-get clean
 
-# .vnc ディレクトリ作成
+# VNC 用設定ディレクトリ作成
 RUN mkdir -p /root/.vnc
 
-# xstartup をコピーして実行権限付与
+# xstartup をコピー & 実行権限付与
 COPY xstartup /root/.vnc/xstartup
 RUN chmod +x /root/.vnc/xstartup
 
-# start-novnc.sh をコピーして実行権限付与
+# start-novnc.sh をコピー & 実行権限付与
 COPY start-novnc.sh /root/start-novnc.sh
 RUN chmod +x /root/start-novnc.sh
 
-# コンテナ起動時に VNC + noVNC を立ち上げる
+# 6080 ポートを開放
+EXPOSE 6080
+
+# コンテナ起動時にスクリプトを実行
 CMD ["/root/start-novnc.sh"]
