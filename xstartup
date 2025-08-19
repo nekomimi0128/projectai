@@ -1,3 +1,5 @@
 #!/bin/bash
-xrdb $HOME/.Xresources
+# XFCE デスクトップ起動用
+export USER=root
+export HOME=/root
 startxfce4 &
