@@ -1,20 +1,33 @@
-# Kali Linux ベース
+# ベースイメージ
 FROM kalilinux/kali-rolling
 
 # 必要パッケージインストール
 RUN apt-get update && apt-get install -y \
     xfce4 \
-    xfce4-terminal \
-    tightvncserver \
-    firefox \
-    nmap \
-    metasploit-framework \
-    git \
-    curl \
+    xfce4-goodies \
+    x11vnc \
+    novnc \
+    websockify \
+    wget \
+    net-tools \
     sudo \
-    dbus-x11 \
-    x11-xserver-utils
+    curl \
+    git \
+    && apt-get clean
 
-# VNC 初期設定用スクリプトコピー
-COPY setup-vnc.sh /root/setup-vnc.sh
-RUN chmod +x /root/setup-vnc.sh
+# VNCパスワード設定（必要なら）
+RUN mkdir ~/.vnc && \
+    x11vnc -storepasswd 1234 ~/.vnc/passwd
+
+# スクリプトをコピー（ホスト側に start-novnc.sh 作成）
+COPY start-novnc.sh /root/start-novnc.sh
+RUN chmod +x /root/start-novnc.sh
+
+# 作業ディレクトリ
+WORKDIR /root
+
+# ポート解放
+EXPOSE 6080
+
+# デフォルトコマンド
+CMD ["/root/start-novnc.sh"]
