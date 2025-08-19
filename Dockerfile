@@ -1,33 +1,21 @@
-# ベースイメージ
+# 本物の Kali Rolling イメージをベースにする
 FROM kalilinux/kali-rolling
 
-# 必要パッケージインストール
-RUN apt-get update && apt-get install -y \
-    xfce4 \
-    xfce4-goodies \
-    x11vnc \
-    novnc \
-    websockify \
-    wget \
-    net-tools \
-    sudo \
-    curl \
-    git \
-    && apt-get clean
+# 必要なパッケージをインストール
+RUN apt-get update && \
+    apt-get install -y xfce4 xfce4-goodies tightvncserver novnc websockify sudo && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# VNCパスワード設定（必要なら）
-RUN mkdir ~/.vnc && \
-    x11vnc -storepasswd 1234 ~/.vnc/passwd
+# デスクトップ環境の設定
+RUN mkdir -p /root/.vnc
+COPY xstartup /root/.vnc/xstartup
+RUN chmod +x /root/.vnc/xstartup
 
-# スクリプトをコピー（ホスト側に start-novnc.sh 作成）
-COPY start-novnc.sh /root/start-novnc.sh
-RUN chmod +x /root/start-novnc.sh
+# ポート設定
+EXPOSE 5901 6080
 
-# 作業ディレクトリ
-WORKDIR /root
+# 起動スクリプトをコピー
+COPY start-novnc.sh /start-novnc.sh
+RUN chmod +x /start-novnc.sh
 
-# ポート解放
-EXPOSE 6080
-
-# デフォルトコマンド
-CMD ["/root/start-novnc.sh"]
+CMD ["/start-novnc.sh"]
