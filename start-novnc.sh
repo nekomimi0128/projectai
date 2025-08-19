@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VNC パスワード設定（好きなパスワードを入れてね）
-VNC_PASS="nekomimi0128"
+VNC_PASS="nekomimi"
 
 # VNC サーバー起動（1ディスプレイ、指定パスワード）
 mkdir -p /root/.vnc
