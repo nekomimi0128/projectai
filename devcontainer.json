@@ -1,0 +1,8 @@
+{
+  "name": "Kali GUI",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["--privileged"],
+  "postCreateCommand": "apt-get update && apt-get install -y xfce4 xfce4-terminal tightvncserver firefox",
+  "forwardPorts": [5901],
+  "remoteUser": "root"
+}
