@@ -1,0 +1,11 @@
+FROM kalilinux/kali-rolling
+RUN apt-get update && apt-get install -y \
+    xfce4 \
+    xfce4-terminal \
+    tightvncserver \
+    firefox \
+    nmap \
+    metasploit-framework \
+    git \
+    curl \
+    sudo
