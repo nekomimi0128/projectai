@@ -26,6 +26,11 @@ ENV LC_ALL=ja_JP.UTF-8
 # VNC用ディレクトリ
 RUN mkdir -p /root/.vnc
 
+# noVNC をダウンロード
+RUN apt-get update && apt-get install -y git python3 python3-pip \
+ && git clone https://github.com/novnc/noVNC.git /opt/novnc \
+ && git clone https://github.com/novnc/websockify /opt/novnc/utils/websockify
+
 # xstartup と start-novnc.sh をコピーして実行権限付与
 COPY xstartup /root/.vnc/xstartup
 RUN chmod +x /root/.vnc/xstartup
