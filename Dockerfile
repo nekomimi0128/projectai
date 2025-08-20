@@ -29,6 +29,7 @@ RUN mkdir -p /root/.vnc
 
 # xstartup をコピー & 実行権限付与
 COPY xstartup /root/.vnc/xstartup
+COPY setup-vnc.sh /root/setup-vnc.sh
 RUN chmod +x /root/.vnc/xstartup
 
 # start-novnc.sh をコピー & 実行権限付与
