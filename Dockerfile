@@ -10,7 +10,19 @@ RUN apt-get update && \
         websockify \
         dbus-x11 x11-xserver-utils \
         sudo \
+        locales \
+        fonts-noto-cjk \
+        firefox-esr \
     && apt-get clean
+
+# 日本語ロケールの生成と環境変数設定
+RUN sed -i -e 's/# ja_JP.UTF-8 UTF-8/ja_JP.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=ja_JP.UTF-8
+
+ENV LANG=ja_JP.UTF-8
+ENV LANGUAGE=ja_JP:ja
+ENV LC_ALL=ja_JP.UTF-8
 
 # VNC 用設定ディレクトリ作成
 RUN mkdir -p /root/.vnc
